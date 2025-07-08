@@ -2,8 +2,10 @@ import express from 'express';
 import dogsRouter from './routes/dogs.route';
 import dogsService from './services/dogs.service';
 import { SERVER_PORT, DATA_REFRESH_INTERVAL } from './config/constants';
+import cors from 'cors'; 
 
 const app = express();
+app.use(cors()); 
 
 app.use(express.json());
 
