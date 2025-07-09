@@ -1,16 +1,15 @@
 import { Box, Card, CardMedia, IconButton, Typography } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import { DogItem } from "../types/types";
+import { DogItem } from "../types/appTypes";
 import { useEffect, useRef, useState } from "react";
 
 interface DogCardProps {
   dog: DogItem;
   isFavorite: boolean;
-  onLike: (filename: string, currentLikes: number) => Promise<number>;
+  onLike: (filename: string) => Promise<void>;
 }
 
 export const DogCard = ({ dog, isFavorite, onLike }: DogCardProps) => {
-  const [likes, setLikes] = useState(dog.likes);
   const [showLikeEffect, setShowLikeEffect] = useState(false);
   const [dimensions, setDimensions] = useState({
     width: dog.type === "video" ? 16 : 4,
@@ -21,10 +20,13 @@ export const DogCard = ({ dog, isFavorite, onLike }: DogCardProps) => {
   let tapTimer: ReturnType<typeof setTimeout>;
 
   const handleLike = async () => {
-    const newLikes = await onLike(dog.filename, likes);
-    setLikes(newLikes);
-    setShowLikeEffect(true);
-    setTimeout(() => setShowLikeEffect(false), 1000);
+    try {
+      await onLike(dog.filename);
+      setShowLikeEffect(true);
+      setTimeout(() => setShowLikeEffect(false), 1000);
+    } catch (error) {
+      console.error("Error handling like:", error);
+    }
   };
 
   const handleDoubleTap = () => {
@@ -41,8 +43,7 @@ export const DogCard = ({ dog, isFavorite, onLike }: DogCardProps) => {
   };
 
   const handleMediaLoad = (event: any) => {
-    const { naturalWidth, naturalHeight, videoWidth, videoHeight } =
-      event.target;
+    const { naturalWidth, naturalHeight, videoWidth, videoHeight } = event.target;
     const width = naturalWidth || videoWidth;
     const height = naturalHeight || videoHeight;
     setDimensions({ width, height });
@@ -56,8 +57,7 @@ export const DogCard = ({ dog, isFavorite, onLike }: DogCardProps) => {
     }
   }, []);
 
-  const aspectRatio =
-    dimensions.width > 0 ? dimensions.height / dimensions.width : 1;
+  const aspectRatio = dimensions.width > 0 ? dimensions.height / dimensions.width : 1;
 
   return (
     <Card
@@ -190,7 +190,7 @@ export const DogCard = ({ dog, isFavorite, onLike }: DogCardProps) => {
             fontWeight: 500,
           }}
         >
-          {likes}
+          {dog.likes}
         </Typography>
       </Box>
     </Card>

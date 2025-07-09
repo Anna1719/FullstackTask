@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { getDogs } from "../api/dogsApi";
+import { getDogs } from "@/api/dogsApi";
+import { queryClient } from "@/api/queryClient";
 
 export const useDogsApi = () => {
   const { data, isLoading, isError } = useQuery({
@@ -8,9 +9,12 @@ export const useDogsApi = () => {
     initialData: [],
   });
 
+  const invalidateDogs = () => queryClient.invalidateQueries({ queryKey: ["dogs"] });
+
   return {
     dogs: data,
     isLoading,
     isError,
+    invalidateDogs,
   };
 };

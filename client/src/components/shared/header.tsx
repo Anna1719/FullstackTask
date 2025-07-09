@@ -1,10 +1,13 @@
-import { AppBar, Toolbar, Button, Typography, Box } from "@mui/material";
+import { AppBar, Toolbar, Button, Box } from "@mui/material";
 import { Link } from "react-router-dom";
 
 export const Header = () => {
   return (
     <AppBar position="static" sx={{ mb: 4 }}>
-      <Toolbar sx={{ justifyContent: "center" }}>
+      <Toolbar sx={{ 
+        justifyContent: "center",
+        backgroundColor: 'primary.dark'
+      }}>
         <Box sx={{ display: "flex", gap: 2 }}>
           <Button
             color="inherit"
@@ -14,6 +17,9 @@ export const Header = () => {
               fontSize: "2.1rem",
               textTransform: "none",
               px: 3,
+              '&:hover': {
+                backgroundColor: 'rgba(255, 255, 255, 0.1)'
+              }
             }}
           >
             All Dogs
@@ -26,6 +32,9 @@ export const Header = () => {
               fontSize: "2.1rem",
               textTransform: "none",
               px: 3,
+              '&:hover': {
+                backgroundColor: 'rgba(255, 255, 255, 0.1)'
+              }
             }}
           >
             Favorites

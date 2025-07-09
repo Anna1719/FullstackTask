@@ -1,17 +1,18 @@
-import { Box, Pagination, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { DogGrid } from "../components/cardsGrid";
 import { useDogsApi } from "../hooks/useApi";
 import { useState } from "react";
-import { useDogActions } from "../hooks/useFavorites";
-import { Loader } from "@/components/loader";
+import { useDogFavorites } from "../hooks/useFavorites";
+import { Loader } from "@/components/shared/loader";
+import { PaginationControl } from "@/components/shared/paginationControl";
+import { CARDS_PER_PAGE } from "@/utils/constants";
 
 export const MainPage = () => {
   const [page, setPage] = useState(1);
-  const perPage = 15;
   const { dogs, isLoading, isError } = useDogsApi();
-  const { favorites, handleLike } = useDogActions();
+  const { favorites, handleLike } = useDogFavorites();
 
-  const paginatedDogs = dogs.slice((page - 1) * perPage, page * perPage);
+  const paginatedDogs = dogs.slice((page - 1) * CARDS_PER_PAGE, page * CARDS_PER_PAGE);
 
   return (
     <Box sx={{ mx: "auto", p: 3 }}>
@@ -32,28 +33,18 @@ export const MainPage = () => {
       ) : isLoading ? (
         <Loader />
       ) : (
-        <>
+        <PaginationControl
+          count={Math.ceil(dogs.length / 15)}
+          page={page}
+          onPageChange={setPage}
+          totalItems={dogs.length}
+        >
           <DogGrid
             dogs={paginatedDogs}
             favorites={favorites}
             onLike={handleLike}
           />
-
-          <Pagination
-            count={Math.ceil(dogs.length / perPage)}
-            page={page}
-            onChange={(_, value) => setPage(value)}
-            sx={{
-              mt: 4,
-              display: "flex",
-              justifyContent: "center",
-              "& .MuiPaginationItem-root": {
-                fontSize: "1.1rem",
-              },
-            }}
-            size="large"
-          />
-        </>
+        </PaginationControl>
       )}
     </Box>
   );
