@@ -94,3 +94,5 @@ $ npm run dev
 $ npm run build  # фронтенд
 $ npm run build && npm start  # бэкенд
 ```
+
+Выполнили: Баринова Анна (front) и Ремез Вячеслав (back)
