@@ -1,4 +1,4 @@
-# Fullstack Doggo Pintrest
+# Fullstack Doggo Pinterest
  
 Приложение для просмотра изображений и видео с собаками в стиле Pinterest, созданное на React, TypeScript и Vite.
 
